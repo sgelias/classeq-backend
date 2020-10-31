@@ -1,0 +1,89 @@
+version: '3'
+volumes:
+  redis: {}
+services:
+  redis:
+    container_name: classeq_redis
+    image: 'redis:alpine'
+    restart: '${DOCKER_RESTART_POLICY:-unless-stopped}'
+    stop_grace_period: '${DOCKER_STOP_GRACE_PERIOD:-3s}'
+    volumes:
+      - './redis:/data'
+    ports:
+      - '6379:6379'
+    networks:
+      classeq_net:
+        ipv4_address: 175.23.0.5
+  neo4j:
+    container_name: classeq_neo4j
+    image: 'neo4j:latest'
+    ports:
+      - '7474:7474'
+      - '7687:7687'
+    environment:
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_dbms_shell_enabled=true
+    volumes:
+      - './neo4j/plugins:/plugins'
+      - './neo4j/data:/var/lib/neo4j/data'
+      - './neo4j/import:/import'
+    networks:
+      classeq_net:
+        ipv4_address: 175.23.0.2
+  dbpostgres:
+    container_name: classeq_postgres
+    image: 'postgres:11'
+    restart: on-failure
+    environment:
+      - POSTGRES_USERNAME=${DB_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${DB_POSTGRES_PASS}
+      - POSTGRES_DB=${DB_POSTGRES_PORT}
+    ports:
+      - '5435:5432/tcp'
+    volumes:
+      - './postgres/:/var/lib/postgresql/data/'
+    networks:
+      classeq_net:
+        ipv4_address: 175.23.0.3
+  adminer:
+    container_name: classeq_adminer
+    image: 'adminer:latest'
+    ports:
+      - '8081:8080/tcp'
+    networks:
+      classeq_net:
+        ipv4_address: 175.23.0.4
+  sso:
+    container_name: classeq_sso
+    build: .
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - ADMIN_NAME=${ADMIN_NAME}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - ADMIN_EMAIL_PASS=${ADMIN_EMAIL_PASS}
+      - DB_POSTGRES_USER=${DB_POSTGRES_USER}
+      - DB_POSTGRES_PASS=${DB_POSTGRES_PASS}
+      - DB_POSTGRES_HOST=${DB_POSTGRES_HOST}
+      - DB_POSTGRES_PORT=${DB_POSTGRES_PORT}
+      - DB_NEO4J_PASS=${DB_NEO4J_PASS}
+    command: bash -c "python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8001"
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./lepiota/:/code:delegated
+    ports:
+      - "8001:8001"
+    depends_on:
+      - dbpostgres
+    links:
+      - dbpostgres
+    networks:
+      classeq_net:
+        ipv4_address: 175.23.0.6
+networks:
+  classeq_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 175.23.0.0/16
