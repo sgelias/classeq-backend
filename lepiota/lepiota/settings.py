@@ -40,6 +40,13 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DEBUG = True
 
 
+# Uncomment this line to propagate exceptions to HTTP response.
+# DEBUG_PROPAGATE_EXCEPTIONS = True
+
+
+FRONTEND_ADDRESS = "http://localhost:3000"
+
+
 ALLOWED_HOSTS = [
     '0.0.0.0',
     '127.0.0.1',
@@ -75,7 +82,8 @@ OAUTH2_PROVIDER = {
         'write': 'Write scope',
         'groups': 'Access to your groups',
         'introspection': 'Introspect token scope',
-    }
+    },
+    'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore'
 }
 
 
@@ -89,6 +97,7 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'lepiota.middleware.frontend_middleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
