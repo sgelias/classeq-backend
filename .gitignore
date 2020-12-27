@@ -3,3 +3,5 @@ postgres
 redis
 .secrets.sh
 .env
+__pycache__/
+*.pyc
