@@ -36,15 +36,12 @@ EMAIL_TIMEOUT = None
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
+# Account configurations
+SIGNUP_REDIRECT = "/welcome/"
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-
-# Uncomment this line to propagate exceptions to HTTP response.
-# DEBUG_PROPAGATE_EXCEPTIONS = True
-
-
-FRONTEND_ADDRESS = "http://localhost:3000"
 
 
 ALLOWED_HOSTS = [
@@ -67,13 +64,15 @@ INSTALLED_APPS = [
     # 3rd party
     'oauth2_provider',
     'rest_framework',
+    'crispy_forms',
 
     # Local APPs
-    'users.apps.UsersConfig',
+    'oauth.apps.OauthConfig',
+    'account.apps.AccountConfig',
 ]
 
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'account.User'
 
 
 OAUTH2_PROVIDER = {
@@ -82,8 +81,7 @@ OAUTH2_PROVIDER = {
         'write': 'Write scope',
         'groups': 'Access to your groups',
         'introspection': 'Introspect token scope',
-    },
-    'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore'
+    }
 }
 
 
@@ -97,7 +95,6 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'lepiota.middleware.frontend_middleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -112,7 +109,10 @@ ROOT_URLCONF = 'lepiota.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "static")],
+        'DIRS': [
+            os.path.join(BASE_DIR, "static"),
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,6 +126,10 @@ TEMPLATES = [
 ]
 
 
+# Set bootstrap4 for crispy forms (used in sign up and registration templates)
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
 WSGI_APPLICATION = 'lepiota.wsgi.application'
 
 
@@ -133,10 +137,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'sso',
-        'USER': os.getenv('DB_POSTGRES_USER'),
-        'PASSWORD': os.getenv('DB_POSTGRES_PASS'),
-        'HOST': os.getenv('DB_POSTGRES_HOST'),
-        'PORT': os.getenv('DB_POSTGRES_PORT'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASS'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 
@@ -177,4 +181,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
 STATIC_URL = '/static/'
+
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'templates'),
+]
+
+
+FIXTURE_DIRS = [
+    os.path.join(BASE_DIR, 'account/fixtures/'),
+]
+
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'

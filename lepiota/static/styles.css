@@ -1,0 +1,25 @@
+body.base-main-container {
+    width: 100%;
+    height: 100%;
+    background: #6e529d;
+}
+
+.main-card {
+    border-radius: 25px !important;
+}
+
+.row {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+.title, .header-title {
+    text-align: center;
+    padding: 1rem;
+    color: #6e529d;
+}
+
+.header-title {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
