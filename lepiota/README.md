@@ -1,15 +1,9 @@
-# Classeq backend
+# Lepiota
 
-Include basic infrastructure to serve the databases and the SSO system for Classeq.
+Lepiota branch is a subdirectory of main that includes only the lepiota project directory.
 
-## Usage
-
-Just type in the terminal:
+Filtered procedure can be performed using:
 
 ```bash
-docker-compose up -d
+git filter-branch --subdirectory-filter ./lepiota -- lepiota
 ```
-
-___
-
-Let's code and be happy!
