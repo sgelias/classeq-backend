@@ -48,6 +48,7 @@ ALLOWED_HOSTS = [
     '0.0.0.0',
     '127.0.0.1',
     'localhost',
+    'ec2-54-162-46-44.compute-1.amazonaws.com',
 ]
 
 
@@ -136,7 +137,7 @@ WSGI_APPLICATION = 'lepiota.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sso',
+        'NAME': 'lepiota_aus',
         'USER': os.getenv('DB_POSTGRES_USER'),
         'PASSWORD': os.getenv('DB_POSTGRES_PASS'),
         'HOST': os.getenv('DB_POSTGRES_HOST'),
