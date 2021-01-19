@@ -25,6 +25,9 @@ MANAGERS = ADMINS
 LOGIN_URL = '/admin/login/'
 
 
+DEBUG_PROPAGATE_EXCEPTIONS = True
+
+
 # SMTP server configurations
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -41,15 +44,13 @@ SIGNUP_REDIRECT = "/welcome/"
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = eval(os.getenv("DJANGO_DEBUG"))
 
 
-ALLOWED_HOSTS = [
-    '0.0.0.0',
-    '127.0.0.1',
-    'localhost',
-    'ec2-54-162-46-44.compute-1.amazonaws.com',
-]
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(" ")
+
+
+FRONTEND_ADDRESS = 'http://localhost:3000'
 
 
 INSTALLED_APPS = [
@@ -97,6 +98,9 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+
+    'lepiota.middleware.frontend_middleware',
+
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -201,3 +205,22 @@ FIXTURE_DIRS = [
 
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/tmp/debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

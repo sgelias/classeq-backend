@@ -19,12 +19,14 @@ oauth2_endpoint_views = [
         name="token"
     ),
     path(
-        'revoke-token/', oauth2_views.
-        RevokeTokenView.as_view(), name="revoke-token"
+        'revoke-token/', 
+        oauth2_views.RevokeTokenView.as_view(),
+        name="revoke-token"
     ),
     path(
         'introspect/',
-        oauth2_views.IntrospectTokenView.as_view(), name='introspect'
+        oauth2_views.IntrospectTokenView.as_view(),
+        name='introspect'
     ),
 ]
 
