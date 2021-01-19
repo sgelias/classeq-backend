@@ -77,20 +77,20 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['username']
 
 
-@receiver(post_save, sender=User)
-def save_profile(sender, instance, **kwargs):
-    
-    # Send email for recipient.
-    send_mail(
-        subject = 'Welcome',
-        message = 'Account creation.',
-        from_email = EMAIL_HOST_USER,
-        html_message = render_to_string(
-            'emails/signup-welcome.html', 
-            { 'context': instance }
-        ),
-        recipient_list = [
-            instance.email
-        ],
-        fail_silently = False,
-    )
+#@receiver(post_save, sender=User)
+#def save_profile(sender, instance, **kwargs):
+#
+#    # Send email for recipient.
+#    send_mail(
+#        subject = 'Welcome',
+#        message = 'Account creation.',
+#        from_email = EMAIL_HOST_USER,
+#        html_message = render_to_string(
+#            'emails/signup-welcome.html', 
+#            { 'context': instance }
+#        ),
+#        recipient_list = [
+#            instance.email
+#        ],
+#        fail_silently = False,
+#    )

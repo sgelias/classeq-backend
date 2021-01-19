@@ -2,6 +2,7 @@ neo4j
 postgres
 redis
 .secrets.sh
+.secrets
 .env
 __pycache__/
 *.pyc
