@@ -13,7 +13,8 @@
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
 
     <!-- Bootstrap -->
-    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
@@ -22,7 +23,7 @@
 
     <!-- Own css -->
     <link rel="stylesheet" href="{% static 'styles.css' %}" />
-    
+
     <title>
         {% block title %}
         {% endblock %}
@@ -32,26 +33,31 @@
 
 <body class="base-main-container">
 
-    <div class="row justify-content-center my-5">
-        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 shadow-lg bg-white mt-5 p-5 main-card">
-            <div>
+    {% if not error %}
+        <div class="row justify-content-center my-5">
+            <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 shadow-lg bg-white mt-5 p-5 main-card">
+                <div>
 
-                <h2 class="header-title">
-                    LEPISTA-AUS
-                </h2>
+                    <h2 class="header-title">
+                        LEPISTA-AUS
+                    </h2>
 
-                <p class="text-center text-muted">
-                    Authentication Service of Lepista APP's
-                </p>
-                
+                    <p class="text-center text-muted">
+                        Authentication Service of Lepista APP's
+                    </p>
+
+                </div>
+
+                <hr>
+
+                {% block content %}
+                {% endblock %}
             </div>
-
-            <hr>
-
-            {% block content %}
-            {% endblock %}
         </div>
-    </div>
+    {% else %}
+        <h2>Error: {{ error.error }}</h2>
+        <p>{{ error.description }}</p>
+    {% endif %}
 
 </body>
 

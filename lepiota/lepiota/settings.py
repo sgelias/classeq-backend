@@ -49,7 +49,6 @@ DEBUG = eval(os.getenv("DJANGO_DEBUG"))
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(" ")
 
-
 FRONTEND_ADDRESS = 'http://localhost:3000'
 
 
@@ -78,6 +77,7 @@ AUTH_USER_MODEL = 'account.User'
 
 
 OAUTH2_PROVIDER = {
+    'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore',
     'SCOPES': {
         'read': 'Read scope',
         'write': 'Write scope',
@@ -206,21 +206,32 @@ FIXTURE_DIRS = [
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': '/tmp/debug.log',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'file': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': './debug.log',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['file'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#     },
+#     'django': {
+#         'handlers': ['file'],
+#         'level': 'DEBUG',
+#         'propagate': True,
+#     },
+#     'django.template': {
+#         'handlers': ['file'],
+#         'level': 'INFO',
+#         'propagate': True,
+#     },
+# }
