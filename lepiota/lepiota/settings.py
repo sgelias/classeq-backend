@@ -49,7 +49,11 @@ DEBUG = eval(os.getenv("DJANGO_DEBUG"))
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(" ")
 
+
 FRONTEND_ADDRESS = 'http://localhost:3000'
+
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 INSTALLED_APPS = [
@@ -81,7 +85,7 @@ OAUTH2_PROVIDER = {
     'SCOPES': {
         'read': 'Read scope',
         'write': 'Write scope',
-        'groups': 'Access to your groups',
+        #'groups': 'Access to your groups',
         'introspection': 'Introspect token scope',
     }
 }
